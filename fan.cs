@@ -14,7 +14,6 @@ namespace switchBoardSimulation
                 return _type;
             }
         }
-
         public int Id
         {
             get
