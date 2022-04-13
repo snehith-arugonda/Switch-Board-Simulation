@@ -88,7 +88,8 @@ namespace switchBoardSimulation
         public void changeStateOfDevice(int id)
         {
             Console.WriteLine("Select one of the options");
-            Console.WriteLine($"1. {ListOfDevices[id - 1].Type} {ListOfDevices[id - 1].Id} {ListOfDevices[id - 1].State}");
+            string deviceState = ListOfDevices[id - 1].State == "OFF"?"ON":"OFF";
+            Console.WriteLine($"1. {ListOfDevices[id - 1].Type} {ListOfDevices[id - 1].Id} {deviceState}");
             Console.WriteLine("2. back");
             int target;
             try
