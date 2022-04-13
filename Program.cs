@@ -49,15 +49,18 @@
                         }
                         catch(FormatException e)
                         {
-                            Console.WriteLine("Invalid Input \n" + e.Message);
+                            Console.WriteLine("\n \n Invalid Input, Try again \n" + e.Message + "\n \n");
                         }
                     }
-                    devices.changeStateOfDevice(target);
+                    else
+                    {
+                        devices.changeStateOfDevice(target);
+                    }
                 }
             }
             catch (FormatException e)
             {
-                Console.WriteLine("Invalid Input \n" + e.Message );
+                Console.WriteLine("\n \n Invalid Input, Try again \n" + e.Message + "\n \n");
                 runSimulation = false;
             }
         }
