@@ -1,12 +1,11 @@
 namespace switchBoardSimulation
 {
-    public class Fan:ElectronicDevice, IElectronicDevice
+    public class Fan:IDevice
     {
-        private string _state = "OFF";
-        private string _type = "Fan";
+        private bool _state = false;
+        private string _type = Devices.Fan.ToString();
         private static int _serialNumber = 0;
         private int _id = ++_serialNumber;
-        private int _globalId = ++ElectronicDevice.globalSerialNumber;
         public string Type
         {
             get
@@ -21,15 +20,8 @@ namespace switchBoardSimulation
                 return _id;
             }
         }
-        public int GlobalId
-        {
-            get
-            {
-                return _globalId;
-            }
-        }
 
-        public string State
+        public bool State
         {
             get
             {
@@ -39,6 +31,10 @@ namespace switchBoardSimulation
             {
                 _state = value;
             }
+        }
+        public override string ToString()
+        {
+            return $"{this.Type} {this.Id} is \"{(this.State == true?"ON":"OFF")}\"";
         }
     }
 }

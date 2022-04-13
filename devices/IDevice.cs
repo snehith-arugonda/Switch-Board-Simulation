@@ -1,6 +1,6 @@
 namespace switchBoardSimulation
 {
-    public interface IElectronicDevice
+    public interface IDevice
     {
         string Type
         {
@@ -10,11 +10,7 @@ namespace switchBoardSimulation
         {
             get;
         }
-        int GlobalId
-        {
-            get;
-        }
-        string State
+        bool State
         {
             get;set;
         }

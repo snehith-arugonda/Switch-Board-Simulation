@@ -1,10 +1,9 @@
 ﻿namespace switchBoardSimulation
 {
-    public class simulation
+    public class Simulation
     {
         public static void Main(string[] args)
         {
-            bool runSimulation = true;
             try
             {
                 Console.WriteLine("Give Number Of fans:");
@@ -27,41 +26,11 @@
                 {
                     throw new FormatException();
                 }
-
-                createElectronicDevices devices = new createElectronicDevices
-                {
-                    NumberOfACs = nACs,
-                    NumberOfBulbs = nBulbs,
-                    NumberOfFans = nFans
-                };
-
-                devices.createDevices();
-                while (runSimulation)
-                {
-                    devices.showDevices();
-                    Console.WriteLine("Select the Id of the device which you eant to change the state of");
-                    int target;
-                    if(!int.TryParse(Console.ReadLine(), out target) || target > devices.getMaxId())
-                    {
-                        try
-                        {
-                            throw new FormatException();
-                        }
-                        catch(FormatException e)
-                        {
-                            Console.WriteLine("\n \n Invalid Input, Try again \n" + e.Message + "\n \n");
-                        }
-                    }
-                    else
-                    {
-                        devices.changeStateOfDevice(target);
-                    }
-                }
+                Simulator.RunSimulator(nFans, nACs, nBulbs);
             }
             catch (FormatException e)
             {
                 Console.WriteLine("\n \n Invalid Input, Try again \n" + e.Message + "\n \n");
-                runSimulation = false;
             }
         }
     }

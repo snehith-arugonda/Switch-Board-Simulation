@@ -1,12 +1,11 @@
 namespace switchBoardSimulation
 {
-    public class AC:ElectronicDevice, IElectronicDevice
+    public class AC:IDevice
 {
-        private string _state = "OFF";
-        private string _type = "AC";
-        static int _serialNumber = 0;
+        private bool _state = false;
+        private string _type = Devices.AC.ToString();
+        private static int _serialNumber = 0;
         private int _id = ++_serialNumber;
-        private int _globalId = ++ElectronicDevice.globalSerialNumber;
         public int Id
         {
             get
@@ -21,15 +20,8 @@ namespace switchBoardSimulation
                 return _type;
             }
         }
-        public int GlobalId
-        {
-            get
-            {
-                return _globalId;
-            }
-        }
 
-        public string State
+        public bool State
         {
             get
             {
@@ -39,6 +31,10 @@ namespace switchBoardSimulation
             {
                 _state = value;
             }
+        }
+        public override string ToString()
+        {
+            return $"{this.Type} {this.Id} is \"{(this.State == true?"ON":"OFF")}\"";
         }
     }
 }

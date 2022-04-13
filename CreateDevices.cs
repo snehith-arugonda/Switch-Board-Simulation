@@ -1,8 +1,8 @@
 namespace switchBoardSimulation
 {
-    public class createElectronicDevices
+    public class CreateDevices
     {
-        public List<IElectronicDevice> ListOfDevices;
+        private List<IDevice> ListOfDevices;
         private int _numberOfFans;
         private int _numberOfBulbs;
         private int _numberOfACs;
@@ -39,17 +39,17 @@ namespace switchBoardSimulation
                 _numberOfBulbs = value;
             }
         }
-        public createElectronicDevices()
+        public CreateDevices()
         {
-            ListOfDevices = new List<IElectronicDevice>();
+            ListOfDevices = new List<IDevice>();
         }
-        public void createDevices()
+        public void CreateDevice()
         {
-            createFan();
-            createAC();
-            createBulb();
+            CreateFan();
+            CreateAC();
+            CreateBulb();
         }
-        private void createFan()
+        private void CreateFan()
         {
             int i = 1;
             while (i <= NumberOfFans)
@@ -58,7 +58,7 @@ namespace switchBoardSimulation
                 i++;
             }
         }
-        private void createAC()
+        private void CreateAC()
         {
             int i = 1;
             while (i <= NumberOfACs)
@@ -67,7 +67,7 @@ namespace switchBoardSimulation
                 i++;
             }
         }
-        private void createBulb()
+        private void CreateBulb()
         {
             int i = 1;
             while (i <= NumberOfBulbs)
@@ -77,19 +77,18 @@ namespace switchBoardSimulation
             }
         }
 
-        public void showDevices()
+        public void ShowDevices()
         {
-            foreach (var device in this.ListOfDevices)
+            for(int i = 0;i < ListOfDevices.Count;i++)
             {
-                Console.WriteLine($"{device.GlobalId}. {device.Type} {device.Id} is \"{device.State}\"");
+                Console.WriteLine($"{i+1}. {ListOfDevices[i].ToString()}");
             }
         }
 
-        public void changeStateOfDevice(int id)
+        public void ChangeStateOfDevice(int id)
         {
             Console.WriteLine("Select one of the options");
-            string deviceState = ListOfDevices[id - 1].State == "OFF"?"ON":"OFF";
-            Console.WriteLine($"1. {ListOfDevices[id - 1].Type} {ListOfDevices[id - 1].Id} {deviceState}");
+            Console.WriteLine($"1. {ListOfDevices[id - 1].Type} {ListOfDevices[id - 1].Id} {(ListOfDevices[id-1].State == false?"ON":"OFF")}");
             Console.WriteLine("2. back");
             int target;
             try
@@ -100,14 +99,7 @@ namespace switchBoardSimulation
                 }
                 if (target == 1)
                 {
-                    if (ListOfDevices[id - 1].State == "OFF")
-                    {
-                        ListOfDevices[id - 1].State = "ON";
-                    }
-                    else
-                    {
-                        ListOfDevices[id - 1].State = "OFF";
-                    }
+                    ListOfDevices[id - 1].State = !ListOfDevices[id-1].State; 
                 }
             }
             catch(FormatException e)
@@ -116,9 +108,15 @@ namespace switchBoardSimulation
             }
         }
 
-        public int getMaxId()
+        public int GetMaxId()
         {
             return ListOfDevices.Count;
         }
+    }
+    public enum Devices
+    {
+        Fan,
+        AC,
+        Bulb
     }
 }
