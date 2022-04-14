@@ -96,6 +96,32 @@ namespace switchBoardSimulation
                 Console.WriteLine($"{i+1}. {ListOfDevices[i].ToString()}");
             }
         }
+        public void RunSwitchBoardSimulation()
+        {
+            bool runSimulation = true;
+            this.CreateDevices();
+            while (runSimulation)
+            {
+                this.ShowDevices();
+                Console.WriteLine("\nSelect the Id of the device which you want to operate on");
+                int target;
+                if (!int.TryParse(Console.ReadLine(), out target) || target > this.GetMaxId())
+                {
+                    try
+                    {
+                        throw new FormatException();
+                    }
+                    catch (FormatException e)
+                    {
+                        Console.WriteLine("\n \n Invalid Input, Try again \n" + e.Message + "\n \n");
+                    }
+                }
+                else
+                {
+                    this.OperationsOnDevice(target);
+                }
+            }
+        }
 
         public void OperationsOnDevice(int id)
         {

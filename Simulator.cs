@@ -16,9 +16,9 @@ namespace switchBoardSimulation
         private Simulator()
         {
             ListOfSwitchBoards = new List<SwitchBoard>();
-            StartSimulation();
+            StartSimulator();
         }
-        private void StartSimulation()
+        private void StartSimulator()
         {
             if (ListOfSwitchBoards.Count > 0)
             {
@@ -48,7 +48,7 @@ namespace switchBoardSimulation
                         NewSwitchBoard();
                     }
                     SwitchBoard selectedSwitchBoard = ListOfSwitchBoards[switchBoardNumber-1];
-                    RunSimulator(selectedSwitchBoard);
+                    selectedSwitchBoard.RunSwitchBoardSimulation();
                 }
             }
             else
@@ -96,38 +96,11 @@ namespace switchBoardSimulation
                 };
 
                 this.ListOfSwitchBoards.Add(switchboard);
-                this.RunSimulator(switchboard);
+                switchboard.RunSwitchBoardSimulation();
             }
             catch (FormatException e)
             {
                 Console.WriteLine("\n \n Invalid Input, Try again \n" + e.Message + "\n \n");
-            }
-        }
-
-        private void RunSimulator(in SwitchBoard switchboard)
-        {
-            bool runSimulation = true;
-            switchboard.CreateDevices();
-            while (runSimulation)
-            {
-                switchboard.ShowDevices();
-                Console.WriteLine("\nSelect the Id of the device which you want to operate on");
-                int target;
-                if (!int.TryParse(Console.ReadLine(), out target) || target > switchboard.GetMaxId())
-                {
-                    try
-                    {
-                        throw new FormatException();
-                    }
-                    catch (FormatException e)
-                    {
-                        Console.WriteLine("\n \n Invalid Input, Try again \n" + e.Message + "\n \n");
-                    }
-                }
-                else
-                {
-                    switchboard.OperationsOnDevice(target);
-                }
             }
         }
     }
