@@ -2,7 +2,7 @@ namespace switchBoardSimulation
 {
     public interface IDevice
     {
-        string Type
+        DeviceType Type
         {
             get;
         }
@@ -14,5 +14,8 @@ namespace switchBoardSimulation
         {
             get;set;
         }
+        void ChangeState(){}
+        void RepairSwitch(){}
+        void RewireSwitch(){}
     }
 }

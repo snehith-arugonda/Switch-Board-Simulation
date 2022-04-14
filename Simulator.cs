@@ -1,24 +1,119 @@
 namespace switchBoardSimulation
 {
-    public static class Simulator
+    public sealed class Simulator
     {
-        public static void RunSimulator(in int nFans, in int nACs, in int nBulbs)
+        private static Simulator _instance = new Simulator();
+        private List<SwitchBoard> ListOfSwitchBoards;
+
+        public static Simulator GetSimulator
+        {
+            get 
+            {
+                return _instance;
+            }
+        }
+
+        private Simulator()
+        {
+            ListOfSwitchBoards = new List<SwitchBoard>();
+            StartSimulation();
+        }
+        private void StartSimulation()
+        {
+            if (ListOfSwitchBoards.Count > 0)
+            {
+                Console.WriteLine("\n \n List of Switch Boards \n");
+                Console.WriteLine($"{0}. new Switch Board");
+                for (int i = 0; i < ListOfSwitchBoards.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {ListOfSwitchBoards[i].Name}");
+                }
+                Console.WriteLine(" \n Select one of the Switch Boards or New Switch Board to add SWitch Board ");
+                int switchBoardNumber;
+                if(!int.TryParse(Console.ReadLine(), out switchBoardNumber) || switchBoardNumber > ListOfSwitchBoards.Count)
+                {
+                    try
+                    {
+                        throw new FormatException();
+                    }
+                    catch(FormatException e)
+                    {
+                        Console.WriteLine("\n\nInvalid Input \n" + e.Message);
+                    }
+                }
+                else
+                {
+                    if(switchBoardNumber == 0)
+                    {
+                        NewSwitchBoard();
+                    }
+                    SwitchBoard selectedSwitchBoard = ListOfSwitchBoards[switchBoardNumber-1];
+                    RunSimulator(selectedSwitchBoard);
+                }
+            }
+            else
+            {
+                Console.WriteLine("\n\nNo Switch Boards to display");
+                Console.WriteLine("To Add Switch Boards add the switchboard here");
+                Console.WriteLine("\nAvailable switchboard are");
+                foreach (var device in Enum.GetValues(typeof(DeviceType)))
+                {
+                    Console.WriteLine(device);
+                }
+                NewSwitchBoard();
+            }
+        }
+        private void NewSwitchBoard()
+        {
+            try
+            {
+                Console.WriteLine("Give Number Of fans:");
+                int nFans;
+                if (!int.TryParse(Console.ReadLine(), out nFans))
+                {
+                    throw new FormatException();
+                }
+
+                Console.WriteLine("Give Number Of Acs:");
+                int nACs;
+                if (!int.TryParse(Console.ReadLine(), out nACs))
+                {
+                    throw new FormatException();
+                }
+
+                Console.WriteLine("Give Number Of fans:");
+                int nBulbs;
+                if (!int.TryParse(Console.ReadLine(), out nBulbs))
+                {
+                    throw new FormatException();
+                }
+                SwitchBoard switchboard = new SwitchBoard
+                {
+                    Name = "Switch Board" + (ListOfSwitchBoards.Count + 1).ToString(),
+                    NumberOfACs = nACs,
+                    NumberOfBulbs = nBulbs,
+                    NumberOfFans = nFans
+                };
+
+                this.ListOfSwitchBoards.Add(switchboard);
+                this.RunSimulator(switchboard);
+            }
+            catch (FormatException e)
+            {
+                Console.WriteLine("\n \n Invalid Input, Try again \n" + e.Message + "\n \n");
+            }
+        }
+
+        private void RunSimulator(in SwitchBoard switchboard)
         {
             bool runSimulation = true;
-            CreateDevices devices = new CreateDevices
-            {
-                NumberOfACs = nACs,
-                NumberOfBulbs = nBulbs,
-                NumberOfFans = nFans
-            };
-
-            devices.CreateDevice();
+            switchboard.CreateDevices();
             while (runSimulation)
             {
-                devices.ShowDevices();
-                Console.WriteLine("Select the Id of the device which you eant to change the state of");
+                switchboard.ShowDevices();
+                Console.WriteLine("\nSelect the Id of the device which you want to operate on");
                 int target;
-                if (!int.TryParse(Console.ReadLine(), out target) || target > devices.GetMaxId())
+                if (!int.TryParse(Console.ReadLine(), out target) || target > switchboard.GetMaxId())
                 {
                     try
                     {
@@ -31,7 +126,7 @@ namespace switchBoardSimulation
                 }
                 else
                 {
-                    devices.ChangeStateOfDevice(target);
+                    switchboard.OperationsOnDevice(target);
                 }
             }
         }

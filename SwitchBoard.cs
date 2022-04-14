@@ -1,11 +1,23 @@
 namespace switchBoardSimulation
 {
-    public class CreateDevices
+    public class SwitchBoard
     {
+        private string _name = "Switch Board";
         private List<IDevice> ListOfDevices;
         private int _numberOfFans;
         private int _numberOfBulbs;
         private int _numberOfACs;
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
         public int NumberOfFans
         {
             get
@@ -39,11 +51,11 @@ namespace switchBoardSimulation
                 _numberOfBulbs = value;
             }
         }
-        public CreateDevices()
+        public SwitchBoard()
         {
             ListOfDevices = new List<IDevice>();
         }
-        public void CreateDevice()
+        public void CreateDevices()
         {
             CreateFan();
             CreateAC();
@@ -85,21 +97,34 @@ namespace switchBoardSimulation
             }
         }
 
-        public void ChangeStateOfDevice(int id)
+        public void OperationsOnDevice(int id)
         {
-            Console.WriteLine("Select one of the options");
-            Console.WriteLine($"1. {ListOfDevices[id - 1].Type} {ListOfDevices[id - 1].Id} {(ListOfDevices[id-1].State == false?"ON":"OFF")}");
-            Console.WriteLine("2. back");
-            int target;
+            Console.WriteLine("\nSelect one of the options");
+            int num = 1;
+            foreach(var operation in Enum.GetValues(typeof(Operation)))
+            {
+                Console.WriteLine($"{num++}. {operation}");
+            }
             try
             {
-                if(!int.TryParse(Console.ReadLine(), out target) || target >= 3)
+                int target;
+                if(!int.TryParse(Console.ReadLine(), out target) || target > num || target < 0)
                 {
                     throw new FormatException();
                 }
-                if (target == 1)
+                else
                 {
-                    ListOfDevices[id - 1].State = !ListOfDevices[id-1].State; 
+                    switch (target)
+                    {
+                        case 1:ListOfDevices[id - 1].ChangeState();
+                        break;
+                        case 2:ListOfDevices[id - 1].RewireSwitch();
+                        break;
+                        case 3:ListOfDevices[id - 1].RepairSwitch();
+                        break;
+                        case 4:return;
+                        default:return;
+                    }
                 }
             }
             catch(FormatException e)
@@ -112,11 +137,5 @@ namespace switchBoardSimulation
         {
             return ListOfDevices.Count;
         }
-    }
-    public enum Devices
-    {
-        Fan,
-        AC,
-        Bulb
     }
 }

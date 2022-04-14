@@ -3,7 +3,7 @@ namespace switchBoardSimulation
     public class Bulb:IDevice
     {
         private bool _state = false;
-        private string _type = Devices.Bulb.ToString();
+        private DeviceType _type = DeviceType.Bulb;
         private static int _serialNumber = 0;
         private int _id = ++_serialNumber;
         public int Id
@@ -13,7 +13,7 @@ namespace switchBoardSimulation
                 return _id;
             }
         }
-        public string Type
+        public DeviceType Type
         {
             get
             {
@@ -31,6 +31,19 @@ namespace switchBoardSimulation
             {
                 _state = value;
             }
+        }
+        public void ChangeState()
+        {
+            this.State = !this.State;
+            Console.WriteLine($"\n \n {this.Type} {this.Id} state is toggled \n \n");
+        }
+        public void RewireSwitch()
+        {
+            Console.WriteLine($"\n \n {this.Type} {this.Id} Switch is rewired \n \n");
+        }
+        public void RepairSwitch()
+        {
+            Console.WriteLine($"\n \n {this.Type} {this.Id} Switch is repaired \n \n");
         }
         public override string ToString()
         {
