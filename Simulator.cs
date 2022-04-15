@@ -53,9 +53,9 @@ namespace switchBoardSimulation
             }
             else
             {
-                Console.WriteLine("\n\nNo Switch Boards to display");
+                Console.WriteLine("\n\nNo Switch Boards in Simulator");
                 Console.WriteLine("To Add Switch Boards add the switchboard here");
-                Console.WriteLine("\nAvailable switchboard are");
+                Console.WriteLine("\nAvailable devices are");
                 foreach (var device in Enum.GetValues(typeof(DeviceType)))
                 {
                     Console.WriteLine(device);
