@@ -57,6 +57,9 @@ namespace switchBoardSimulation
         }
         public void CreateDevices()
         {
+            Fan.MakeZero();
+            AC.MakeZero();
+            Bulb.MakeZero();
             CreateFan();
             CreateAC();
             CreateBulb();
@@ -91,6 +94,7 @@ namespace switchBoardSimulation
 
         public void ShowDevices()
         {
+            Console.WriteLine($"{0}. exit current switch board");
             for(int i = 0;i < ListOfDevices.Count;i++)
             {
                 Console.WriteLine($"{i+1}. {ListOfDevices[i].ToString()}");
@@ -99,11 +103,10 @@ namespace switchBoardSimulation
         public void RunSwitchBoardSimulation()
         {
             bool runSimulation = true;
-            this.CreateDevices();
             while (runSimulation)
             {
                 this.ShowDevices();
-                Console.WriteLine("\nSelect the Id of the device which you want to operate on");
+                Console.WriteLine("\nSelect the Id of the device which you want to operate on or exit the switchboard");
                 int target;
                 if (!int.TryParse(Console.ReadLine(), out target) || target > this.GetMaxId())
                 {
@@ -118,6 +121,10 @@ namespace switchBoardSimulation
                 }
                 else
                 {
+                    if(target == 0)
+                    {
+                        return;
+                    }
                     this.OperationsOnDevice(target);
                 }
             }

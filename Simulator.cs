@@ -3,11 +3,11 @@ namespace switchBoardSimulation
     public sealed class Simulator
     {
         private static Simulator _instance = new Simulator();
-        private List<SwitchBoard> ListOfSwitchBoards;
+        private List<KeyValuePair<string, SwitchBoard>> SwitchBoardSimulator;
 
         public static Simulator GetSimulator
         {
-            get 
+            get
             {
                 return _instance;
             }
@@ -15,40 +15,47 @@ namespace switchBoardSimulation
 
         private Simulator()
         {
-            ListOfSwitchBoards = new List<SwitchBoard>();
-            StartSimulator();
+            SwitchBoardSimulator = new List<KeyValuePair<string, SwitchBoard>>();
+            while (true)
+            {
+                StartSimulator();
+            }
         }
         private void StartSimulator()
         {
-            if (ListOfSwitchBoards.Count > 0)
+            if (SwitchBoardSimulator.Count > 0)
             {
                 Console.WriteLine("\n \n List of Switch Boards \n");
                 Console.WriteLine($"{0}. new Switch Board");
-                for (int i = 0; i < ListOfSwitchBoards.Count; i++)
+                int i = 1;
+                foreach (KeyValuePair<string, SwitchBoard> switchBoard in SwitchBoardSimulator)
                 {
-                    Console.WriteLine($"{i + 1}. {ListOfSwitchBoards[i].Name}");
+                    Console.WriteLine($"{i++}. {switchBoard.Key}");
                 }
                 Console.WriteLine(" \n Select one of the Switch Boards or New Switch Board to add SWitch Board ");
                 int switchBoardNumber;
-                if(!int.TryParse(Console.ReadLine(), out switchBoardNumber) || switchBoardNumber > ListOfSwitchBoards.Count)
+                if (!int.TryParse(Console.ReadLine(), out switchBoardNumber) || switchBoardNumber > SwitchBoardSimulator.Count)
                 {
                     try
                     {
                         throw new FormatException();
                     }
-                    catch(FormatException e)
+                    catch (FormatException e)
                     {
                         Console.WriteLine("\n\nInvalid Input \n" + e.Message);
                     }
                 }
                 else
                 {
-                    if(switchBoardNumber == 0)
+                    if (switchBoardNumber == 0)
                     {
                         NewSwitchBoard();
                     }
-                    SwitchBoard selectedSwitchBoard = ListOfSwitchBoards[switchBoardNumber-1];
-                    selectedSwitchBoard.RunSwitchBoardSimulation();
+                    else
+                    {
+                        SwitchBoard selectedSwitchBoard = SwitchBoardSimulator[switchBoardNumber - 1].Value;
+                        selectedSwitchBoard.RunSwitchBoardSimulation();
+                    }
                 }
             }
             else
@@ -67,6 +74,8 @@ namespace switchBoardSimulation
         {
             try
             {
+                Console.WriteLine("Give the name of Switch Board");
+                string switchboardName = Console.ReadLine()!;
                 Console.WriteLine("Give Number Of fans:");
                 int nFans;
                 if (!int.TryParse(Console.ReadLine(), out nFans))
@@ -89,13 +98,14 @@ namespace switchBoardSimulation
                 }
                 SwitchBoard switchboard = new SwitchBoard
                 {
-                    Name = "Switch Board" + (ListOfSwitchBoards.Count + 1).ToString(),
+                    Name = switchboardName,
                     NumberOfACs = nACs,
                     NumberOfBulbs = nBulbs,
                     NumberOfFans = nFans
                 };
 
-                this.ListOfSwitchBoards.Add(switchboard);
+                this.SwitchBoardSimulator.Add(new KeyValuePair<string, SwitchBoard>(switchboardName, switchboard));
+                switchboard.CreateDevices();
                 switchboard.RunSwitchBoardSimulation();
             }
             catch (FormatException e)

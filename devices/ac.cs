@@ -49,5 +49,9 @@ namespace switchBoardSimulation
         {
             return $"{this.Type} {this.Id} is \"{(this.State == true?"ON":"OFF")}\"";
         }
+        public static void MakeZero()
+        {
+            _serialNumber = 0;
+        }
     }
 }
